@@ -5,7 +5,8 @@ import ssl
 # Configuration
 SERVER_HOST = '127.0.0.1'
 SERVER_PORT = 8000
-CERT_FILE = 'server.crt'  # Path to the server's SSL certificate file
+CERT_FILE = '/Users/s4nzok/python_practicals/Enhanced_TCP_chat(SSL)/server.crt'
+# Path to the server's SSL certificate file
 
 # SSL context setup
 ssl_context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
@@ -13,7 +14,7 @@ ssl_context.load_verify_locations(CERT_FILE)
 
 # Global variables
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)   # Create TCP socket
-secure_client = ssl_context.wrap_socket(client)              # Wrap with SSL/TLS
+secure_client = ssl_context.wrap_socket(client, server_hostname=SERVER_HOST)  # Wrap with SSL/TLS
 
 nickname = input("Choose a nickname: ")
 

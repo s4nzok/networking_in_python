@@ -7,8 +7,8 @@ import logging
 HOST = '127.0.0.1'
 PORT = 8000
 MAX_CLIENTS = 10
-CERT_FILE = 'server.crt'  # Path to your server's SSL certificate file
-KEY_FILE = 'server.key'   # Path to your server's SSL private key file
+CERT_FILE = '/Users/s4nzok/python_practicals/Enhanced_TCP_chat(SSL)/server.crt'  # Correct certificate file path
+KEY_FILE = '/Users/s4nzok/python_practicals/Enhanced_TCP_chat(SSL)/server.key'  # Private key file path
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
@@ -19,8 +19,8 @@ ssl_context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
 ssl_context.load_cert_chain(certfile=CERT_FILE, keyfile=KEY_FILE)
 
 # Global variables
-clients = []         # List to store connected client sockets
-nicknames = {}       # Dictionary to map client sockets to their nicknames
+clients = []  # List to store connected client sockets
+nicknames = {}  # Dictionary to map client sockets to their nicknames
 
 def broadcast(message, sender):
     """Broadcasts a message to all connected clients except the sender."""
@@ -65,12 +65,13 @@ def receive_connections():
             secure_client = ssl_context.wrap_socket(client_socket, server_side=True)
         except ssl.SSLError as e:
             logger.error(f"SSL handshake failed with {client_address}: {e}")
+            client_socket.close()
             continue
 
-        secure_client.send('NICK'.encode('utf-8'))        # Request nickname from client
+        secure_client.send('NICK'.encode('utf-8'))  # Request nickname from client
         nickname = secure_client.recv(1024).decode('utf-8')
-        nicknames[secure_client] = nickname               # Map client socket to nickname
-        clients.append(secure_client)                     # Add client socket to list
+        nicknames[secure_client] = nickname  # Map client socket to nickname
+        clients.append(secure_client)  # Add client socket to list
 
         logger.info(f"Nickname of the client is {nickname}")
         broadcast(f"{nickname} joined the chat.".encode('utf-8'), secure_client)
