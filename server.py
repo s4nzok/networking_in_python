@@ -29,6 +29,7 @@ def handle(client):
             broadcast(message)
             # if succeeds, broad this msg to all clients.
             # including this client as well.
+
         except:
             index = clients.index(client)
             clients.remove(client)
