@@ -1,0 +1,8 @@
+Hello there!
+
+This is a mail sent with python
+
+I am learning good
+
+Your's
+sanzok
